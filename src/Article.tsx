@@ -1,7 +1,11 @@
 import type { ActivityComponentType } from "@stackflow/react";
 import { AppScreen } from "@stackflow/plugin-basic-ui";
 import { useFlow } from "./stackflow";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import ApiClient, { MBRID_API } from "@/libs/client/apiClient";
+import { CODE_GROUP } from "@/libs/constants/types";
+import { usePullToRefresh } from "@/libs/hooks/usePullToRefresh";
+import { PullToRefreshIndicator } from "@/libs/components/PullToRefreshIndicator";
 
 type ArticleParams = {
   title: string;
@@ -26,22 +30,18 @@ type RouteData = {
 const Article: ActivityComponentType<ArticleParams> = ({
   params = { title: "" },
 }) => {
-  const { pop } = useFlow();
+  const { pop, replace } = useFlow();
   const [routeData, setRouteData] = useState<RouteData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const goBack = async () => {
+  const fetchRouteData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        "http://route.1call-logis.co.kr/route/v1/driving/127.32322,37.351541;127.2631981,37.3561632?overview=false"
+      const data: RouteData = await new ApiClient(MBRID_API.BACKEND).get(
+        "/route/v1/driving/127.32322,37.351541;127.2631981,37.3561632?overview=false"
       );
-      if (!response.ok) {
-        throw new Error("API 요청 실패");
-      }
-      const data: RouteData = await response.json();
       setRouteData(data);
     } catch (err) {
       setError(
@@ -52,13 +52,47 @@ const Article: ActivityComponentType<ArticleParams> = ({
     }
   };
 
+  const goBack = () => {
+    fetchRouteData();
+  };
+
+  // Pull-to-refresh 설정
+  const { pullDistance, isRefreshing } = usePullToRefresh({
+    onRefresh: async () => {
+      // 스택은 유지하고 현재 페이지 데이터만 새로고침
+      // await fetchRouteData();
+      setRouteData(null);
+    },
+    threshold: 80,
+    enabled: true,
+  });
+
   const goBackMultiple = () => {
     // 액티비티 여러 개 제거
     pop(3);
   };
 
+  useEffect(() => {
+    console.log(CODE_GROUP.value.사과);
+  }, []);
+
+  const goReplace = () => {
+    replace("Article", { title: "Article 2" });
+  };
+
   return (
-    <AppScreen appBar={{ title: "Article" }}>
+    <AppScreen
+      preventSwipeBack={false}
+      appBar={{
+        title: "Article",
+        renderRight: () => <div>닫기</div>,
+      }}
+    >
+      <PullToRefreshIndicator
+        pullDistance={pullDistance}
+        threshold={80}
+        isRefreshing={isRefreshing}
+      />
       <div style={{ padding: "20px" }}>
         <h1>{params.title}</h1>
         <button onClick={goBack} disabled={loading}>
@@ -70,6 +104,15 @@ const Article: ActivityComponentType<ArticleParams> = ({
         >
           Back 3 Steps
         </button>
+
+        <div>
+          <button
+            className="bg-blue-500 text-white p-2 rounded-md"
+            onClick={goReplace}
+          >
+            Replace
+          </button>
+        </div>
 
         {error && (
           <div style={{ marginTop: "20px", color: "red" }}>

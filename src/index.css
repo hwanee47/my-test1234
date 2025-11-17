@@ -1,2 +1,15 @@
 @import "tailwindcss";
 @import "@stackflow/plugin-basic-ui/index.css";
+
+/* Pull-to-refresh 방지 */
+html,
+body {
+  overscroll-behavior-y: none;
+  overscroll-behavior: none;
+  touch-action: pan-y;
+}
+
+#root {
+  overscroll-behavior-y: none;
+  overscroll-behavior: none;
+}
