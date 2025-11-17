@@ -25,7 +25,7 @@ const Article: ActivityComponentType<ArticleParams> = ({
     <AppScreen appBar={{ title: "Article" }}>
       <div>
         <h1>{params.title}</h1>
-        <button onClick={goBack}>Back</button>
+        <button onClick={goBack}>Back up date!!</button>
         <button
           className="bg-blue-500 text-white p-2 rounded-md"
           onClick={goBackMultiple}
