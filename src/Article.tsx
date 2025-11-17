@@ -26,7 +26,12 @@ const Article: ActivityComponentType<ArticleParams> = ({
       <div>
         <h1>{params.title}</h1>
         <button onClick={goBack}>Back</button>
-        <button onClick={goBackMultiple}>Back 3 Steps</button>
+        <button
+          className="bg-blue-500 text-white p-2 rounded-md"
+          onClick={goBackMultiple}
+        >
+          Back 3 Steps
+        </button>
       </div>
     </AppScreen>
   );
