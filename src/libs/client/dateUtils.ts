@@ -29,7 +29,10 @@ export default class DateUtils {
    * - ss: 초 2자리
    * - s: 초 1자리
    */
-  static formatDate(date: Date, format?: string): string {
+  static formatDate(date: Date | string, format?: string): string {
+    if (typeof date === 'string') {
+      date = parseDate(date);
+    }
     return formatDate(date, format);
   }
 
@@ -39,7 +42,8 @@ export default class DateUtils {
    * @returns Date 객체
    * @example parseDate('2025-03-04') => new Date('2025-03-04')
    * @example parseDate('2025-03-04 00:00:00') => new Date('2025-03-04 00:00:00')
-   * @example parseDate('25-03') => new Date('2025-03-04')
+   * @example parseDate('20250304') => new Date('2025-03-04')
+   * @example parseDate('25-03') => new Date('2025-03-01')
    *
    */
   static parseDate(dateStr: string): Date {
@@ -125,7 +129,7 @@ export default class DateUtils {
    * @returns 오늘 날짜
    * @example getToday() => '2025-03-04'
    */
-  static getToday(format = "YYYY-MM-DD"): string {
+  static getToday(format = 'YYYY-MM-DD'): string {
     return formatDate(new Date(), format);
   }
 
@@ -139,10 +143,14 @@ export default class DateUtils {
   static getMondayOfWeek(date: Date = new Date()): Date {
     return getMondayOfWeek(date);
   }
+
+  static getNextMonday(): Date {
+    return getNextMonday();
+  }
 }
 
 // 날짜 포맷
-const formatDate = (date: Date, format: string = "YYYY-MM-DD"): string => {
+const formatDate = (date: Date, format: string = 'YYYY-MM-DD'): string => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -154,29 +162,46 @@ const formatDate = (date: Date, format: string = "YYYY-MM-DD"): string => {
   const tokens: { [key: string]: string } = {
     YYYY: String(year),
     YY: String(year).slice(-2),
-    MM: String(month).padStart(2, "0"),
+    MM: String(month).padStart(2, '0'),
     M: String(month),
-    DD: String(day).padStart(2, "0"),
+    DD: String(day).padStart(2, '0'),
     D: String(day),
-    HH: String(hours24).padStart(2, "0"),
+    HH: String(hours24).padStart(2, '0'),
     H: String(hours24),
-    hh: String(hours12).padStart(2, "0"),
+    hh: String(hours12).padStart(2, '0'),
     h: String(hours12),
-    mm: String(minutes).padStart(2, "0"),
+    mm: String(minutes).padStart(2, '0'),
     m: String(minutes),
-    ss: String(seconds).padStart(2, "0"),
+    ss: String(seconds).padStart(2, '0'),
     s: String(seconds),
-    tt: hours24 < 12 ? "오전" : "오후",
+    tt: hours24 < 12 ? '오전' : '오후',
   };
 
-  return format.replace(
-    /YYYY|YY|MM|M|DD|D|HH|H|hh|h|mm|m|ss|s|tt/g,
-    (match) => tokens[match]
-  );
+  return format.replace(/YYYY|YY|MM|M|DD|D|HH|H|hh|h|mm|m|ss|s|tt/g, (match) => tokens[match]);
 };
 
 // 문자열 Date 객체로 변환
 const parseDate = (dateStr: string): Date => {
+  // 1) MS‐JSON 포맷 -- 쪽지함 RegistryDate
+  const ms = /^\/Date\((\d+)\)\/$/.exec(dateStr);
+  if (ms) return new Date(+ms[1]);
+  // '20250304' 형식 처리 (YYYYMMDD)
+  if (/^\d{8}$/.test(dateStr)) {
+    const year = parseInt(dateStr.substring(0, 4));
+    const month = parseInt(dateStr.substring(4, 6)) - 1; // 월은 0부터 시작
+    const day = parseInt(dateStr.substring(6, 8));
+    return new Date(year, month, day);
+  }
+
+  // '25-03' 형식 처리 (YY-MM)
+  if (/^\d{2}-\d{2}$/.test(dateStr)) {
+    const [yearStr, monthStr] = dateStr.split('-');
+    const year = 2000 + parseInt(yearStr);
+    const month = parseInt(monthStr) - 1;
+    return new Date(year, month, 1); // 해당 월의 첫째 날로 설정
+  }
+
+  // 기존 형식들 처리
   return new Date(dateStr);
 };
 
@@ -232,4 +257,15 @@ const getMondayOfWeek = (date: Date): Date => {
   const diff = day === 0 ? -6 : 1 - day; // 일요일이면 6일 전, 그 외에는 1-day만큼 이동
   result.setDate(result.getDate() + diff);
   return result;
+};
+
+// 오늘 이후의 가장 가까운 월요일 반환
+const getNextMonday = () => {
+  const today = new Date();
+  const day = today.getDay(); // 0(일) ~ 6(토), 1이 월요일
+  // 오늘이 월요일(day === 1)이면 7일 뒤, 아니면 다음 월요일까지 남은 일수
+  const diff = (8 - day) % 7 || 7;
+  const nextMonday = new Date(today);
+  nextMonday.setDate(today.getDate() + diff);
+  return nextMonday;
 };

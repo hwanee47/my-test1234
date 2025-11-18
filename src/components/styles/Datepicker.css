@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+
+.react-datepicker {
+  @apply w-full;
+}
+
+.react-datepicker__month-container {
+  @apply w-full;
+}
+
+/* react-datepicker__header  */
+.react-datepicker__header {
+  @apply border-none bg-white;
+}
+
+.react-datepicker__header .react-datepicker__day-names {
+  @apply flex justify-between border-y border-[#EEE] px-3 py-[0.2px] text-base font-medium text-[#333];
+}
+
+.react-datepicker__header .react-datepicker__day-names .react-datepicker__day-name {
+  @apply text-[#333];
+}
+
+.react-datepicker__header .react-datepicker__day-names .react-datepicker__day-name[aria-label='토요일'] {
+  @apply text-[#0075FF];
+}
+
+.react-datepicker__header .react-datepicker__day-names .react-datepicker__day-name[aria-label='일요일'] {
+  @apply text-[#F00];
+}
+
+/* react-datepicker__month  */
+.react-datepicker__month {
+  @apply m-0 mt-3;
+}
+
+.react-datepicker__month .react-datepicker__week {
+  @apply mb-3 flex justify-between px-3;
+}
+
+.react-datepicker__day {
+  @apply p-0.5 text-base font-medium text-[#333];
+}
+
+/* 기본 선택 스타일 제거 */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__day:hover,
+.react-datepicker__day--selected:hover,
+.react-datepicker__day--keyboard-selected:hover {
+  background-color: transparent !important;
+}
+
+/* 커스텀 선택 스타일 */
+.react-datepicker__day--selected span {
+  @apply text-[#F9FAFF];
+}
+
+.react-datepicker__day--weekend[aria-label*='토요일'] {
+  @apply !text-[#0075FF];
+}
+
+.react-datepicker__day--weekend[aria-label*='일요일'] {
+  @apply text-[#F00];
+}
+
+.react-datepicker__month .react-datepicker__week .react-datepicker__day--outside-month {
+  @apply !text-[#CCC];
+}
+
+.react-datepicker__day--today {
+  @apply font-bold text-gray-900;
+}
+
+/* Datepicker.css */
+.react-datepicker__day--weekend.react-datepicker__day--disabled {
+  color: #ccc !important;
+  cursor: not-allowed !important;
+}
+
+.react-datepicker__day--disabled {
+  color: #ccc !important;
+  cursor: not-allowed !important;
+}
