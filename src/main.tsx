@@ -1,9 +1,9 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
-import { Stack } from "@/stackManager";
-import { LoadingProvider } from "@/contexts";
-import { initEruda } from "@/eruda";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import { Stack } from '@/stackManager';
+import { LoadingProvider, ToastProvider } from '@/contexts';
+import { initEruda } from '@/eruda';
 
 // // Pull-to-refresh 방지
 // let touchStartY = 0;
@@ -31,10 +31,12 @@ import { initEruda } from "@/eruda";
 
 initEruda();
 
-createRoot(document.getElementById("root")!).render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <LoadingProvider>
-      <Stack />
+      <ToastProvider>
+        <Stack />
+      </ToastProvider>
     </LoadingProvider>
-  </StrictMode>
+  </StrictMode>,
 );

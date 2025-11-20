@@ -1,9 +1,10 @@
+import ApiClient from '@/libs/client/apiClient';
 import XmlUtils from '@/libs/client/xmlUtils';
 
 // 로그인
 export const login = async (lognick: string, userId: string, password: string) => {
-  console.log('lognick', lognick);
-  const xml = XmlUtils.createXml({
+  // 요청 파라미터 생성
+  const payload = XmlUtils.createXml({
     variables: {},
     datasets: [
       {
@@ -18,19 +19,16 @@ export const login = async (lognick: string, userId: string, password: string) =
     ],
   });
 
-  fetch('/api', {
-    method: 'POST', // GET, POST 등
-    headers: {
-      Accept: 'application/xml',
-      'Content-Type': 'application/xml', // POST 시 필요
-    },
-    body: xml,
-  })
-    .then(async (response) => {
-      const xmlText = await response.text();
-      const jsonResult = XmlUtils.convertXmlToJson(xmlText);
-      console.log('jsonResult', jsonResult);
-      return jsonResult;
-    })
-    .catch((error) => console.error(error));
+  try {
+    const res = await new ApiClient().post('/api/login.MindBridge', payload);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return {
+      Parameters: {
+        commonv_CODE: 'SY000E',
+        commonv_MESSAGE: '로그인 실패',
+      },
+    };
+  }
 };

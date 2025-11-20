@@ -1,1 +1,2 @@
-export { useLoading, LoadingProvider } from "./LoadingContext";
+export { useLoading, LoadingProvider } from './LoadingContext';
+export { useToast, ToastProvider } from './ToastContext';

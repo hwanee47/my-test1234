@@ -2,42 +2,60 @@ import { Button, Checkbox, Input } from '@/components';
 import { AppScreen } from '@stackflow/plugin-basic-ui';
 import type { ActivityComponentType } from '@stackflow/react';
 import { useFlow } from '@/stackManager';
-import ApiClient from '@/libs/client/apiClient';
-import { XMLParser } from 'fast-xml-parser';
 import { useState } from 'react';
+import { login } from './action';
+import { useLoading, useToast } from '@/contexts';
 
 const LoginActivity: ActivityComponentType = () => {
-  const { replace, push } = useFlow();
+  const { replace } = useFlow();
+  const { showToast } = useToast();
+  const { setIsLoading } = useLoading();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isSaveId, setIsSaveId] = useState(false);
+  const [lognick, setLognick] = useState('3ls');
+  const [id, setId] = useState('likebird');
+  const [password, setPassword] = useState('1111');
+
+  // 로그인 처리
+  const handleLogin = async () => {
+    setIsLoading(true);
+    const res = await login(lognick, id, password);
+    setIsLoading(false);
+    console.log('res111', res);
+    if (res.Parameters.commonv_CODE === 'SY000M') {
+      replace('HomeActivity', { title: 'Home' });
+    } else {
+      showToast('error', res.Parameters.commonv_MESSAGE);
+    }
+  };
 
   return (
     <AppScreen backgroundColor='#2F6A8DFF'>
       <div className='flex h-screen flex-col'>
         <div className='flex h-full flex-col items-center justify-center gap-2'>
-          {/* <img src='/logo.png' />
-          <span className='text-3xl font-bold text-white'>MBRID</span> */}
+          <img src='/logo.png' />
+          <span className='text-3xl font-bold text-white'>MBRID</span>
         </div>
         <div className='rounded-t-2xl bg-white'>
           <div className='mx-auto mt-3 h-1 w-[40px] bg-[#DEE1E6FF]'></div>
-          <div className='mt-10 px-6 pb-9'>
+          <div className='mt-6 px-6 pb-9'>
             <div className='flex flex-col gap-4'>
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-1'>
                 <h2 className='text-sm font-bold text-gray-700'>회사명</h2>
-                <Input name='companyName' placeholder='' />
+                <Input name='lognick' placeholder='' onChange={(e) => setLognick(e.target.value)} value={lognick} />
               </div>
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-1'>
                 <h2 className='text-sm font-bold text-gray-700'>아이디</h2>
-                <Input name='companyName' placeholder='' />
+                <Input name='id' placeholder='' onChange={(e) => setId(e.target.value)} value={id} />
               </div>
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-col gap-1'>
                 <h2 className='text-sm font-bold text-gray-700'>비밀번호</h2>
                 <Input
-                  name='default'
+                  name='password'
                   type={isShowPassword ? 'text' : 'password'}
                   inputMode='numeric'
-                  maxLength={6}
-                  className='font-semibold text-[#000]'
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
                   rightElement={
                     <Button
                       onClick={() => setIsShowPassword(!isShowPassword)}
@@ -68,16 +86,14 @@ const LoginActivity: ActivityComponentType = () => {
                   id='chkSaveId'
                   checked={isSaveId}
                   label='아이디 저장'
-                  labelClassName='text-md'
+                  labelClassName='text-sm'
+                  checkboxClassName='checked:bg-[#2F6A8DFF]'
                   onChange={(checked) => setIsSaveId(checked)}
                 />
               </div>
             </div>
-            <div className='mt-10'>
-              <Button
-                className='w-full rounded-2xl bg-[#2F6A8DFF] py-3 text-white'
-                onClick={() => push('HomeActivity', { title: 'Home' }, { animate: false })}
-              >
+            <div className='mt-4'>
+              <Button className='w-full rounded-md bg-[#2F6A8DFF] py-3 text-white' onClick={handleLogin}>
                 로그인
               </Button>
             </div>

@@ -200,14 +200,36 @@ const escapeXml = (str: any): string => {
 /**
  * XML을 JSON으로 변환
  */
-const convertXmlToJson = (xmlData: string): Record<string, any[]> => {
-  const result: Record<string, any[]> = {};
+const convertXmlToJson = (xmlData: string): Record<string, any> => {
+  const result: Record<string, any> = {};
 
   const parsedXml = new XMLParser({
     ignoreAttributes: false,
   }).parse(xmlData);
 
-  // Dataset이 배열인 경우와 단일 객체인 경우 모두 처리
+  // -----------------------------
+  // Parameters 처리
+  // -----------------------------
+  const parametersNode = parsedXml.Root?.Parameters;
+
+  if (parametersNode) {
+    const params = Array.isArray(parametersNode.Parameter) ? parametersNode.Parameter : [parametersNode.Parameter];
+
+    const paramObj: Record<string, string> = {};
+
+    params.forEach((param: any) => {
+      const id = param['@_id'] || param.id;
+      let value = param['#text'] ?? '';
+      value = decodeHtmlEntities(value);
+      if (id) paramObj[id] = value;
+    });
+
+    result['Parameters'] = paramObj;
+  }
+
+  // -----------------------------
+  // Dataset 처리
+  // -----------------------------
   const datasets = Array.isArray(parsedXml.Root?.Dataset)
     ? parsedXml.Root.Dataset
     : parsedXml.Root?.Dataset
@@ -218,18 +240,20 @@ const convertXmlToJson = (xmlData: string): Record<string, any[]> => {
     const datasetId = dataset['@_id'] || dataset.id;
     if (!datasetId) return;
 
-    // Row가 배열인 경우와 단일 객체인 경우 모두 처리
     const rows = Array.isArray(dataset.Rows?.Row) ? dataset.Rows.Row : dataset.Rows?.Row ? [dataset.Rows.Row] : [];
 
     const convertedRows = rows.map((row: any) => {
       const rowObj: Record<string, string> = {};
 
-      // Col이 배열인 경우와 단일 객체인 경우 모두 처리
       const cols = Array.isArray(row.Col) ? row.Col : row.Col ? [row.Col] : [];
 
       cols.forEach((col: any) => {
         const colId = col['@_id'] || col.id;
-        const colValue = typeof col === 'string' ? col : col['#text'] || col;
+        let colValue = typeof col === 'string' ? col : col['#text'] || col;
+
+        if (typeof colValue === 'string') {
+          colValue = decodeHtmlEntities(colValue);
+        }
         if (colId) {
           rowObj[colId] = colValue;
         }
@@ -242,4 +266,12 @@ const convertXmlToJson = (xmlData: string): Record<string, any[]> => {
   });
 
   return result;
+};
+
+const decodeHtmlEntities = (value: any): any => {
+  if (typeof value !== 'string') return value; // 문자열이 아니면 그대로 반환
+
+  return value.replace(/&#(\d+);/g, (_, dec) => {
+    return String.fromCharCode(dec);
+  });
 };

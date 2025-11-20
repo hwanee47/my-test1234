@@ -24,10 +24,10 @@ interface ToastProps {
 
 // style
 const toastConfig = {
-  success: { icon: faCheckCircle, bgColor: 'bg-green-500', textColor: 'text-green-50' },
-  info: { icon: faInfoCircle, bgColor: 'bg-blue-500', textColor: 'text-blue-50' },
-  warning: { icon: faExclamationTriangle, bgColor: 'bg-yellow-500', textColor: 'text-yellow-50' },
-  error: { icon: faTimesCircle, bgColor: 'bg-red-500', textColor: 'text-red-50' },
+  success: { icon: faCheckCircle, bgColor: 'bg-green-400', textColor: 'text-green-50' },
+  info: { icon: faInfoCircle, bgColor: 'bg-blue-400', textColor: 'text-blue-50' },
+  warning: { icon: faExclamationTriangle, bgColor: 'bg-yellow-400', textColor: 'text-yellow-50' },
+  error: { icon: faTimesCircle, bgColor: 'bg-red-400', textColor: 'text-red-50' },
   base: { icon: null, bgColor: 'bg-[rgba(0,0,0,0.70)]', textColor: 'text-white' },
 };
 

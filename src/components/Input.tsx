@@ -79,7 +79,7 @@ const Input = forwardRef<HTMLInputElement, InputProps & InputHTMLAttributes<HTML
             name={name}
             type={type}
             className={twMerge(
-              'w-full rounded-lg border border-[#E0E0E0] px-4 py-3 text-base font-normal text-[#000] outline-none placeholder:text-base placeholder:font-normal placeholder:text-[#AFAFAF]',
+              'w-full rounded-lg border border-[#E0E0E0] px-4 py-3 text-base font-normal text-[#000] outline-none placeholder:text-base placeholder:font-normal placeholder:text-[#AFAFAF] focus:border-gray-400',
               `${disabled ? 'text-gray-500' : ''}`,
               leftElement ? 'pl-10' : '',
               rightElement ? 'pr-10' : '',
