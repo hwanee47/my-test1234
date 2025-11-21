@@ -3,7 +3,7 @@ import { AppScreen } from '@stackflow/plugin-basic-ui';
 import { Button } from '@/components';
 import { XMLParser } from 'fast-xml-parser';
 import XmlUtils from '@/libs/client/xmlUtils';
-import { login } from './login/action';
+import { login } from '../login/action';
 
 const TestActivity: ActivityComponentType = () => {
   const items = [

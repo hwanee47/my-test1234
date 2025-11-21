@@ -2,9 +2,10 @@ import { Button, Checkbox, Input } from '@/components';
 import { AppScreen } from '@stackflow/plugin-basic-ui';
 import type { ActivityComponentType } from '@stackflow/react';
 import { useFlow } from '@/stackManager';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { login } from './action';
 import { useLoading, useToast } from '@/contexts';
+import { useUserInfo } from '@/store';
 
 const LoginActivity: ActivityComponentType = () => {
   const { replace } = useFlow();
@@ -15,6 +16,7 @@ const LoginActivity: ActivityComponentType = () => {
   const [lognick, setLognick] = useState('3ls');
   const [id, setId] = useState('likebird');
   const [password, setPassword] = useState('1111');
+  const { setUserInfo } = useUserInfo();
 
   // 로그인 처리
   const handleLogin = async () => {
@@ -22,7 +24,24 @@ const LoginActivity: ActivityComponentType = () => {
     const res = await login(lognick, id, password);
     setIsLoading(false);
     console.log('res111', res);
+
+    // 로그인 성공
     if (res.Parameters.commonv_CODE === 'SY000M') {
+      // 사용자 정보 저장
+      console.log('res', res);
+      setUserInfo(res.dsOutput0[0]);
+      // setUserInfo({
+      //   BEF2CNT: res.BEF2CNT,
+      //   BEF1CNT: res.BEF1CNT,
+      //   CUSTGBN: res.CUSTGBN,
+      //   LOGNICK: res.LOGNICK,
+      //   USERID: res.USERID,
+      //   EMPCD: res.EMPCD,
+      //   EMPNM: res.EMPNM,
+      //   CUSTCD: res.CUSTCD,
+      //   CUSTNM: res.CUSTNM,
+      //   XDEL: res.XDEL,
+      // });
       replace('HomeActivity', { title: 'Home' });
     } else {
       showToast('error', res.Parameters.commonv_MESSAGE);

@@ -15,7 +15,7 @@ export default function Card({ className, children, onClick }: CardProps) {
   return (
     <div
       className={twMerge(
-        'rounded-[0.625rem] border border-gray-100 bg-white px-5 py-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.06)]',
+        'rounded-md border border-gray-100 bg-white px-5 py-4 shadow-[0px_2px_2px_0px_rgba(0,0,0,0.06)]',
         className,
       )}
       onClick={onClick}

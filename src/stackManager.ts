@@ -3,7 +3,7 @@ import { basicRendererPlugin } from '@stackflow/plugin-renderer-basic';
 import { basicUIPlugin } from '@stackflow/plugin-basic-ui';
 import LoginActivity from '@/pages/login/LoginActivity';
 import { historySyncPlugin } from '@stackflow/plugin-history-sync';
-import { HomeActivity, NotFoundPageActivity, TestActivity } from '@/pages';
+import { HomeActivity, NotFoundPageActivity, TestActivity, MenuActivity } from '@/pages';
 
 export const { Stack, useFlow } = stackflow({
   transitionDuration: 350,
@@ -12,6 +12,7 @@ export const { Stack, useFlow } = stackflow({
     HomeActivity,
     NotFoundPageActivity,
     TestActivity,
+    MenuActivity,
   },
   plugins: [
     basicRendererPlugin(),
@@ -25,6 +26,7 @@ export const { Stack, useFlow } = stackflow({
         HomeActivity: '/home',
         NotFoundPageActivity: '/404',
         TestActivity: '/test',
+        MenuActivity: '/menu',
       },
       fallbackActivity: () => 'NotFoundPageActivity',
       useHash: false,
