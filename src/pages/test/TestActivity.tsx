@@ -4,6 +4,7 @@ import { Button } from '@/components';
 import { XMLParser } from 'fast-xml-parser';
 import XmlUtils from '@/libs/client/xmlUtils';
 import { login } from '../login/action';
+import Layout from '@/pages/Layout';
 
 const TestActivity: ActivityComponentType = () => {
   const items = [
@@ -23,7 +24,15 @@ const TestActivity: ActivityComponentType = () => {
   };
 
   return (
-    <AppScreen appBar={{ title: 'TestActivity' }}>
+    <Layout
+      appBar={{
+        title: '입고현황',
+        renderRight: () => <Button>Test11</Button>,
+      }}
+      onBack={() => {
+        console.log('onBack callback');
+      }}
+    >
       <div className='flex h-full w-full flex-col p-2'>
         <h2 className='text-lg font-medium text-gray-700'>Components</h2>
         <div className='mt-2 grid gap-4 sm:grid-cols-2'>
@@ -52,7 +61,7 @@ const TestActivity: ActivityComponentType = () => {
           <Accordion items={items} /> */}
         </div>
       </div>
-    </AppScreen>
+    </Layout>
   );
 };
 

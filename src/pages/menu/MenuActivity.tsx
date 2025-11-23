@@ -9,6 +9,7 @@ import { useFlow } from '@/stackManager';
 import { Avatar, Card } from '@/components';
 import { useUserInfo } from '@/store';
 import { menuList } from './menu';
+import Layout from '@/pages/Layout';
 
 const MenuActivity: ActivityComponentType = () => {
   const { replace, push } = useFlow();
@@ -31,7 +32,7 @@ const MenuActivity: ActivityComponentType = () => {
   };
 
   return (
-    <AppScreen appBar={{ title: 'MY', renderRight: renderRight }} backgroundColor='#F8F9FA'>
+    <Layout appBar={{ title: 'MY', renderRight: renderRight }} backgroundColor='#F8F9FA'>
       <div className='flex h-full flex-col pb-3'>
         <div className='bg-white'>
           <img src='/my.jpg' alt='photo' />
@@ -90,12 +91,15 @@ const MenuActivity: ActivityComponentType = () => {
           </div>
           <div className=''>
             <Card className='flex items-center justify-center rounded-none py-2.5'>
-              <span className='text-xs text-[#9095A1]'>앱 버전 v1.0.0</span>
+              <div className='flex items-center gap-2 text-sm text-[#9095A1]'>
+                <span>앱 버전</span>
+                <span>v{__APP_VERSION__}</span>
+              </div>
             </Card>
           </div>
         </div>
       </div>
-    </AppScreen>
+    </Layout>
   );
 };
 

@@ -6,7 +6,7 @@ import { useUserInfo } from '@/store';
 import { useEffect } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { NodeCarousel } from '@/components';
+import Layout from '@/pages/Layout';
 
 const HomeActivity: ActivityComponentType = () => {
   const { replace } = useFlow();
@@ -37,7 +37,7 @@ const HomeActivity: ActivityComponentType = () => {
   };
 
   return (
-    <AppScreen appBar={{ title: 'MBRID', renderRight: renderRight }}>
+    <Layout appBar={{ title: 'MBRID', renderRight: renderRight }}>
       <div className='flex h-full w-full flex-col'>
         <div className='p-2'>
           <ImageCarousel
@@ -84,7 +84,7 @@ const HomeActivity: ActivityComponentType = () => {
           </div>
         </div>
       </div>
-    </AppScreen>
+    </Layout>
   );
 };
 

@@ -1,9 +1,9 @@
 /*************************************************************
- * 풀투풀리프레시 컴포넌트
+ * 풀투리프레시 컴포넌트
  * - created by hwanee-k
  *************************************************************/
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import { Spinner } from '@/components';
+import { Spinner } from '.';
 
 interface PullToRefreshProps {
   children: ReactNode; // 컨텐츠

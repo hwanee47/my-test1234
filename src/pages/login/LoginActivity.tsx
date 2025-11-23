@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { login } from './action';
 import { useLoading, useToast } from '@/contexts';
 import { useUserInfo } from '@/store';
+import Layout from '@/pages/Layout';
 
 const LoginActivity: ActivityComponentType = () => {
   const { replace } = useFlow();
@@ -23,25 +24,12 @@ const LoginActivity: ActivityComponentType = () => {
     setIsLoading(true);
     const res = await login(lognick, id, password);
     setIsLoading(false);
-    console.log('res111', res);
 
     // 로그인 성공
     if (res.Parameters.commonv_CODE === 'SY000M') {
       // 사용자 정보 저장
       console.log('res', res);
       setUserInfo(res.dsOutput0[0]);
-      // setUserInfo({
-      //   BEF2CNT: res.BEF2CNT,
-      //   BEF1CNT: res.BEF1CNT,
-      //   CUSTGBN: res.CUSTGBN,
-      //   LOGNICK: res.LOGNICK,
-      //   USERID: res.USERID,
-      //   EMPCD: res.EMPCD,
-      //   EMPNM: res.EMPNM,
-      //   CUSTCD: res.CUSTCD,
-      //   CUSTNM: res.CUSTNM,
-      //   XDEL: res.XDEL,
-      // });
       replace('HomeActivity', {});
     } else {
       showToast('error', res.Parameters.commonv_MESSAGE);
@@ -49,7 +37,7 @@ const LoginActivity: ActivityComponentType = () => {
   };
 
   return (
-    <AppScreen backgroundColor='#2F6A8DFF'>
+    <Layout backgroundColor='#2F6A8DFF'>
       <div className='flex h-screen flex-col'>
         <div className='flex h-full flex-col items-center justify-center gap-2'>
           <img src='/logo.png' />
@@ -119,7 +107,7 @@ const LoginActivity: ActivityComponentType = () => {
           </div>
         </div>
       </div>
-    </AppScreen>
+    </Layout>
   );
 };
 

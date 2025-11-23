@@ -1,8 +1,12 @@
-@import "tailwindcss";
-@import "@stackflow/plugin-basic-ui/index.css";
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import 'tailwindcss';
+@import '@stackflow/plugin-basic-ui/index.css';
 
-/* Pull-to-refresh 방지 */
-html,
+* {
+  font-family: 'Pretendard', sans-serif;
+}
+
+/* html,
 body {
   overscroll-behavior-y: none;
   overscroll-behavior: none;
@@ -12,4 +16,4 @@ body {
 #root {
   overscroll-behavior-y: none;
   overscroll-behavior: none;
-}
+} */

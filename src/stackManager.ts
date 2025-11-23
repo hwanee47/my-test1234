@@ -4,7 +4,7 @@ import { basicUIPlugin } from '@stackflow/plugin-basic-ui';
 import LoginActivity from '@/pages/login/LoginActivity';
 import { historySyncPlugin } from '@stackflow/plugin-history-sync';
 import { HomeActivity, NotFoundPageActivity, TestActivity, MenuActivity, InboundStatusActivity } from '@/pages';
-import { pluginPersistStack } from './libs/plugins/pluginPersistStack';
+import history from '@/libs/plugins/history';
 
 export const { Stack, useFlow } = stackflow({
   transitionDuration: 350,
@@ -23,6 +23,7 @@ export const { Stack, useFlow } = stackflow({
     }),
     // 브라우져 history 동기화
     historySyncPlugin({
+      // history,
       routes: {
         LoginActivity: '/',
         HomeActivity: '/home',
@@ -34,6 +35,5 @@ export const { Stack, useFlow } = stackflow({
       fallbackActivity: () => 'NotFoundPageActivity',
       useHash: false,
     }),
-    pluginPersistStack(),
   ],
 });

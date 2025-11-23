@@ -9,7 +9,7 @@ export const menuList = [
       },
       {
         title: '입고 검수',
-        activity: 'LoginActivity',
+        activity: 'TestActivity',
       },
       {
         title: '현장 입고',
