@@ -42,7 +42,7 @@ const LoginActivity: ActivityComponentType = () => {
       //   CUSTNM: res.CUSTNM,
       //   XDEL: res.XDEL,
       // });
-      replace('HomeActivity', { title: 'Home' });
+      replace('HomeActivity', {});
     } else {
       showToast('error', res.Parameters.commonv_MESSAGE);
     }

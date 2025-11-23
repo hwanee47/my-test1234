@@ -8,3 +8,5 @@ export { default as Checkbox } from './Checkbox';
 export { default as Datepicker } from './Datepicker';
 export { default as Input } from './Input';
 export { default as Spinner } from './Spinner';
+export { default as ImageCarousel } from './ImageCarousel';
+export { default as NodeCarousel } from './NodeCarousel';

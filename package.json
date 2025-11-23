@@ -8,7 +8,8 @@
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
     "lint": "eslint .",
-    "start": "vite preview"
+    "start:dev": "vite preview --mode development",
+    "start:prod": "vite preview --mode production"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
